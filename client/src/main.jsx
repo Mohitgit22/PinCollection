@@ -11,8 +11,15 @@ import CreatePage from './routes/createPage/Createpage';
 import MainLayout from './routes/layouts/MainLayout';
 import Postpage from './routes/postPage/Postpage';
 
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
+
+
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+  <QueryClientProvider client={queryClient}>
    <BrowserRouter>
   <Routes>
    <Route element={<MainLayout />}>
@@ -26,5 +33,6 @@ createRoot(document.getElementById('root')).render(
   </Routes>
   <App />
   </BrowserRouter>
+  </QueryClientProvider>
   </StrictMode>,
 )
