@@ -1,67 +1,89 @@
 .postPage {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-  }
-  
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+/* Main container with fixed max height */
+.postContainer {
+  width: 70%;
+  max-height: 820px;
+  display: flex;
+  border: 1px solid #e9e9e9;
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+/* Fixed-size container for images */
+.postImg {
+  width: 500px;  /* Fixed width */
+  height: 600px; /* Fixed height */
+  max-width: 100%;
+  max-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #c8bcaf;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Ensures image fits properly */
+.postImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Maintains aspect ratio without distortion */
+}
+
+/* Post details section */
+.postDetails {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+/* User info section */
+.postUser {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.postUser img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.postUser span {
+  font-size: 14px;
+}
+
+/* Responsiveness for smaller screens */
+@media (max-width: 1127px) {
   .postContainer {
-    width: 70%;
-    max-height: 820px;
-    display: flex;
-    border: 1px solid #e9e9e9;
-    border-radius: 32px;
-    overflow: hidden;
-  }
-  
-  .postImg {
-    /* FIXED: IMAGE */
-    /* flex: 1; */
-    background-color: #c8bcaf;
-  }
-  
-  .postImg img {
     width: 100%;
-    height: 100%;
-    /* FIXED: IMAGE */
-    /* object-fit: cover; */
-    object-fit: contain;
+    margin-right: 16px;
   }
-  
-  .postDetails {
-    flex: 1;
-    height: 100%;
-    display: flex;
+}
+
+@media (max-width: 751px) {
+  .postContainer {
     flex-direction: column;
-    gap: 32px;
-    padding: 16px;
-    overflow: hidden;
+    max-height: unset;
   }
-  
-  .postUser {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+
+  .postImg {
+    width: 100%; /* Full width on smaller screens */
+    height: auto; /* Adjust height automatically */
+    max-height: 500px;
   }
-  
-  .postUser img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+
+  .postImg img {
+    object-fit: contain; /* Ensures full visibility */
   }
-  
-  .postUser span {
-    font-size: 14px;
-  }
-  
-  @media (max-width: 1127px) {
-    .postContainer {
-      width: 100%;
-      margin-right: 16px;
-    }
-  }
-  @media (max-width: 751px) {
-    .postContainer {
-      flex-direction: column;
-      max-height: unset;
-    }
-  }
+}

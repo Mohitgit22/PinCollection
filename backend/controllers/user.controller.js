@@ -6,6 +6,8 @@ import jwt from "jsonwebtoken";
 export const registerUser = async (req, res) => {
   const { username, displayName, email, password } = req.body;
 
+  // console.log(req.body);
+
   if (!username || !email || !password) {
     return res.status(400).json({ message: "All fields are required!" });
   }
@@ -21,6 +23,7 @@ export const registerUser = async (req, res) => {
 
   const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
+  //from the response , we are creating a cookie name "token":1st parameter and its value is token:2nd parameter
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -31,6 +34,8 @@ export const registerUser = async (req, res) => {
 
   res.status(201).json(detailsWithoutPassword);
 };
+
+
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -69,12 +74,17 @@ export const logoutUser = async (req, res) => {
   res.status(200).json({ message: "Logout successful" });
 };
 
+
+
+
 export const getUser = async (req, res) => {
   const { username } = req.params;
 
   const user = await User.findOne({ username });
 
   const { hashedPassword, ...detailsWithoutPassword } = user.toObject();
+
+
 
   const followerCount = await Follow.countDocuments({ following: user._id });
   const followingCount = await Follow.countDocuments({ follower: user._id });
@@ -106,6 +116,56 @@ export const getUser = async (req, res) => {
     });
   }
 };
+
+
+// export const getUser = async (req, res) => {
+//   try {
+//     const { username } = req.params;
+//     const user = await User.findOne({ username });
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found!" });
+//     }
+
+//     const { hashedPassword, ...detailsWithoutPassword } = user.toObject();
+//     const followerCount = await Follow.countDocuments({ following: user._id });
+//     const followingCount = await Follow.countDocuments({ follower: user._id });
+
+//     const token = req.cookies.token;
+//     let isFollowing = false; // Default value
+
+//     if (token) {
+//       jwt.verify(token, process.env.JWT_SECRET, async (err, payload) => {
+//         if (!err) {
+//           const isExists = await Follow.exists({
+//             follower: payload.userId,
+//             following: user._id,
+//           });
+//           isFollowing = !!isExists;
+//         }
+
+//         // Send response after verification is complete
+//         return res.status(200).json({
+//           ...detailsWithoutPassword,
+//           followerCount,
+//           followingCount,
+//           isFollowing,
+//         });
+//       });
+//     } else {
+//       // If no token, send response immediately
+//       return res.status(200).json({
+//         ...detailsWithoutPassword,
+//         followerCount,
+//         followingCount,
+//         isFollowing: false,
+//       });
+//     }
+//   } catch (error) {
+//     res.status(500).json({ message: "Internal server error", error });
+//   }
+// };
+
 
 export const followUser = async (req, res) => {
   const { username } = req.params;

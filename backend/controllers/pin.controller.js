@@ -65,7 +65,7 @@ export const createPin = async (req, res) => {
 
   const media = req.files.media;
 
-  if ((!title, !description, !media)) {
+  if ((!title || !description || !media)) {
     return res.status(400).json({ message: "All fields are required!" });
   }
 

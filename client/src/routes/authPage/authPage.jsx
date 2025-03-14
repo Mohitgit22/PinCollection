@@ -1,11 +1,43 @@
-import React, { useState } from 'react'
-import './authPage.css';
-import Image from '../../components/image/image';
+import "./authPage.css";
+import Image from "../../components/image/image";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import apiRequest from "../../utils/apiRequest";
+import useAuthStore from "../../utils/authStore";
 
 const AuthPage = () => {
 
   const [isRegister, setIsRegister]  = useState(false);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  const {setCurrentUser} = useAuthStore()
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    
+    try {
+      const res = await apiRequest.post(
+        `/users/auth/${isRegister ? "register" : "login"}`,
+        data
+      );
+  
+      setCurrentUser(res.data);
+
+      // console.log("Response:", res); // ✅ Debugging step
+      // setCurrentUser(res.data);  // 💥 This is where the error happens
+      navigate("/");
+    } catch (err) {
+      console.error("Error:", err); // ✅ Log full error response
+      console.error("Error Response:", err.response); // Log the error response from the server
+      setError(err.response?.data?.message || "Something went wrong!");
+    }
+  };
+  
 
 
   return (
@@ -15,7 +47,7 @@ const AuthPage = () => {
       <h1>{isRegister ? "Create an Account" :"Login to your account"}</h1>
 
       {isRegister ? (
-      <form key="register">
+      <form key="register" onSubmit={handleSubmit}>
 
         <div className='formGroup'>
          <label htmlFor='username'>Username</label>
@@ -33,7 +65,7 @@ const AuthPage = () => {
         </div>
         <div className='formGroup'>
          <label htmlFor='password'>Password</label>
-         <input type="Password" placeholder='Password' required name="Password" id="Password"/>
+         <input type="password" placeholder='Password' required name="password" id="password"/>
         </div>
 
 
@@ -43,14 +75,14 @@ const AuthPage = () => {
       {error && <p className='error'>{error}</p>}
       </form>
       )  : ( 
-        <form key="loginForm">
+        <form key="loginForm" onSubmit={handleSubmit}>
         <div className='formGroup'>
          <label htmlFor='email'>Email</label>
          <input type="email" placeholder='Email' required name="email" id="email"/>
         </div>
         <div className='formGroup'>
          <label htmlFor='password'>Password</label>
-         <input type="Password" placeholder='Password' required name="Password" id="Password"/>
+         <input type="password" placeholder='Password' required name="password" id="password"/>
         </div>
 
         <button type='submit'>Login</button>

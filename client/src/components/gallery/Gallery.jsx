@@ -172,20 +172,18 @@ import Skeleton from "../skeleton/skeleton";
 
 
 
-
-
-const fetchPins = async ({pageParam, search}) => {
- const res = await axios.get(`${import.meta.env.VITE_API_ENDPOINT}/pins?cursor=${pageParam}&search=${search|| ""}`);
+const fetchPins = async ({pageParam, search, userId, boardId}) => {
+ const res = await axios.get(`${import.meta.env.VITE_API_ENDPOINT}/pins?cursor=${pageParam}&search=${search|| ""} &userId=${userId || "" }&boardId=${boardId || ""}`);
  console.log(res.data);
  return res.data;
 }
 
 
-const Gallery = ({search}) => {
+const Gallery = ({search, userId, boardId}) => {
  const { data, fetchNextPage, hasNextPage, status} = useInfiniteQuery({
-  queryKey: ["pins"],
+  queryKey: ["pins", "userId"],
   queryFn: ({ pageParam = 0 }) =>
-      fetchPins({ pageParam, search }),
+      fetchPins({ pageParam, search , userId, boardId}),
   initialPageParam: 0,
   getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
  })
