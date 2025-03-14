@@ -20,6 +20,7 @@
     "gitignore": "^0.7.0",
     "imagekit": "^6.0.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.12.1"
+    "mongoose": "^8.12.1",
+    "sharp": "^0.33.5"
   }
 }

@@ -48,7 +48,7 @@ const Postpage = () => {
      </div>
     </div>
     </div>
-  )
+)
 }
 
 export default Postpage

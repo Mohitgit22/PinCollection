@@ -7,6 +7,9 @@ import sharp from "sharp";
 import Imagekit from "imagekit";
 import jwt from "jsonwebtoken";
 
+import dotenv from "dotenv"
+dotenv.config()
+
 export const getPins = async (req, res) => {
   const pageNumber = Number(req.query.cursor) || 0;
   const search = req.query.search;
